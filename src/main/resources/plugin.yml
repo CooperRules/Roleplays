@@ -1,0 +1,13 @@
+name: Roleplay
+version: '${project.version}'
+main: org.roguemc.roleplay.Roleplay
+api-version: 1.18
+author: VirusDetected
+description: Custom plugin made for Argium Networks and SkittleMC
+commands:
+  rp:
+    description: Opens the GUI for roleplays
+    usage: /rp
+  rpinvite:
+    description: Ape
+    usage: /rpinvite

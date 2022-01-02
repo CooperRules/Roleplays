@@ -1,0 +1,23 @@
+no-permission: "&cYou don't have permission for this command!"
+invited-to-rp: "&cYou have been invited to a roleplay!"
+success-invited: "&cSuccessfully invited"
+gui-name: '&8&lRoleplay Menu'
+browse-name: '&e&lBrowse Roleplays'
+browse-lore:
+  - ''
+  - '&7Browse all sorts of public'
+  - '&7Roleplays!'
+explanation-name: '&a&lWhat are Roleplays?'
+explanation-lore:
+  - ''
+  - '&7Basically, Roleplays are private chat'
+  - '&7channels where you can create and invite'
+  - '&7your friends to them!'
+  - ''
+  - '&7There are &ainfinite &7amount of possibilities with Roleplays!'
+create-name: '&b&lCreate Roleplay'
+create-lore:
+  - ''
+  - '&7Creates a brand new Roleplay'
+  - '&7that you can invite your'
+  - '&7friends to!'

@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -29,6 +30,28 @@ public class EventsClass implements Listener {
     public EventsClass(Roleplay plugin) {
         this.plugin = plugin;
         this.chatRoom = plugin.getChatRoom();
+    }
+    @EventHandler
+    public void format(AsyncPlayerChatEvent event) {
+        event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        String prefix = ChatColor.translateAlternateColorCodes('&', Roleplay.getChat().getPlayerPrefix(event.getPlayer()));
+        String suffix = ChatColor.translateAlternateColorCodes('&', Roleplay.getChat().getPlayerSuffix(event.getPlayer()));
+        suffix = " " + suffix;
+        if (Roleplay.getChat().getPlayerSuffix(event.getPlayer()) !=  "") {
+            event.setFormat(prefix + event.getPlayer().getDisplayName() + suffix + " §7: " + "§r%2$s");
+        }
+        if (Roleplay.getChat().getPlayerSuffix(event.getPlayer()) ==  "") {
+            event.setFormat(prefix + event.getPlayer().getDisplayName()  + " §7: " + "§r%2$s");
+        }
+    }
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (Roleplay.getPerms().playerInGroup(e.getPlayer(), "adminrank")){
+            String playername = e.getPlayer().getName();
+            Bukkit.broadcastMessage(" ");
+            Bukkit.broadcastMessage(ChatColor.AQUA + "" +ChatColor.BOLD + "* ADMIN" + ChatColor.RESET + "" + ChatColor.YELLOW + "" + ChatColor.BOLD + " " + playername + " has joined the game!");
+            Bukkit.broadcastMessage(" ");
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

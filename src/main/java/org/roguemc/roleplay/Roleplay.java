@@ -8,15 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.roguemc.roleplay.commands.Help;
-import org.roguemc.roleplay.commands.Ignore;
-import org.roguemc.roleplay.commands.Invite;
-import org.roguemc.roleplay.commands.Reload;
+import org.roguemc.roleplay.commands.*;
 
 import java.lang.reflect.Field;
 
 public final class Roleplay extends JavaPlugin implements Listener {
-    private static Roleplay plugin;
+    public static Roleplay plugin;
     private static ChatRoom chatRoom;
     private static Permission perms;
     private static Chat chat;
@@ -44,11 +41,14 @@ public final class Roleplay extends JavaPlugin implements Listener {
         chatRoom = new ChatRoom();
         setupChat();
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
-        this.getCommand("roleplay").setExecutor(new Invite(this));
-        this.getCommand("rp").setExecutor(new Invite(this));
-        this.getCommand("noemotes").setExecutor(new Ignore(this));
-        this.getCommand("emotes").setExecutor(new Help(this));
-        this.getCommand("emotesreload").setExecutor(new Reload(this));
+        this.getCommand("roleplay").setExecutor(new Invite());
+        this.getCommand("rp").setExecutor(new Invite());
+        this.getCommand("noemotes").setExecutor(new Ignore());
+        this.getCommand("emotes").setExecutor(new Help());
+        this.getCommand("emotesreload").setExecutor(new Reload());
+        this.getCommand("suffix").setExecutor(new Suffix(this));
+        this.getCommand("suffixclear").setExecutor(new SuffixClear());
+
         getServer().getPluginManager().registerEvents(new EventsClass(this), this);
         this.start();
         this.setupPermissions();

@@ -37,8 +37,7 @@ public class Suffix implements CommandExecutor {
                         Roleplay.getChat().setPlayerSuffix(p, "");
                     } else {
                         String newsuffix = ChatColor.translateAlternateColorCodes('&', suffixtoset);
-                        String newest = " " + newsuffix;
-                        Roleplay.getChat().setPlayerSuffix(p, newest);
+                        Roleplay.getChat().setPlayerSuffix(p, " " + newsuffix);
                     }
                 }
             }

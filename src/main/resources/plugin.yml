@@ -20,3 +20,9 @@ commands:
   emotesreload:
     description: reloads emotes
     usage: /emotesreload
+  suffix:
+    description: ape
+    usage: /suffix
+  suffixclear:
+    description: ape2
+    usage: /suffixclear <player>

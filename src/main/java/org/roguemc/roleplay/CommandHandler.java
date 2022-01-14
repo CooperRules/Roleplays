@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler extends BukkitCommand {
-    Plugin plugin;
+    private final Plugin plugin;
 
     public CommandHandler(final String name) {
         super(name);
@@ -192,15 +192,15 @@ public class CommandHandler extends BukkitCommand {
 
     public boolean execute(final CommandSender sender, final String cmd, final String[] args) {
         final Player p = (Player) sender;
-        for (final String key : plugin.getConfig().getConfigurationSection("Emotes").getKeys(false)) {
+        for (final String key : Roleplay.plugin.getConfig().getConfigurationSection("Emotes").getKeys(false)) {
             if (cmd.equalsIgnoreCase(key)) {
                 if (p.hasPermission("emotes." + key)) {
                     if (args.length > 0) {
                         final Player reciving = Bukkit.getPlayer(args[0]);
                         if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
                             if (!(reciving.hasPermission("emotes.ignore"))) {
-                                final String particle = plugin.getConfig().getString("Emotes." + key + ".particle");
-                                final String sound = plugin.getConfig().getString("Emotes." + key + ".sound");
+                                final String particle = Roleplay.plugin.getConfig().getString("Emotes." + key + ".particle");
+                                final String sound = Roleplay.plugin.getConfig().getString("Emotes." + key + ".sound");
                                 if (!particle.equalsIgnoreCase("false")) {
                                     this.sendParticle(p, reciving, particle);
                                 }
@@ -208,15 +208,15 @@ public class CommandHandler extends BukkitCommand {
                                     p.playSound(p.getLocation(), Sound.valueOf(sound), 1.0f, 1.0f);
                                     reciving.playSound(reciving.getLocation(), Sound.valueOf(sound), 1.0f, 1.0f);
                                 }
-                                for (String messages : plugin.getConfig().getStringList("Emotes." + key + ".tomessages")) {
+                                for (String messages : Roleplay.plugin.getConfig().getStringList("Emotes." + key + ".tomessages")) {
                                     messages = messages.replace("%player%", reciving.getDisplayName());
                                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', messages));
                                 }
-                                for (String messages : plugin.getConfig().getStringList("Emotes." + key + ".frommessages")) {
+                                for (String messages : Roleplay.plugin.getConfig().getStringList("Emotes." + key + ".frommessages")) {
                                     messages = messages.replace("%player%", p.getDisplayName());
                                     reciving.sendMessage(ChatColor.translateAlternateColorCodes('&', messages));
                                 }
-                                for (String messages : plugin.getConfig().getStringList("Emotes." + key + ".broadcastmsgs")) {
+                                for (String messages : Roleplay.plugin.getConfig().getStringList("Emotes." + key + ".broadcastmsgs")) {
                                     messages = messages.replace("%player%", reciving.getDisplayName());
                                     messages = messages.replace("%target%", p.getDisplayName());
                                     for (Player player : Bukkit.getOnlinePlayers()) {

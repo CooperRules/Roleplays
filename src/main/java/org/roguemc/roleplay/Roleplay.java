@@ -1,38 +1,57 @@
 package org.roguemc.roleplay;
 
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.roguemc.roleplay.commands.Help;
+import org.roguemc.roleplay.commands.Ignore;
+import org.roguemc.roleplay.commands.Invite;
+import org.roguemc.roleplay.commands.Reload;
+
+import java.lang.reflect.Field;
 
 public final class Roleplay extends JavaPlugin implements Listener {
+    private static Roleplay plugin;
+    private static ChatRoom chatRoom;
+    private static Permission perms;
+    private static Chat chat;
     public Plugin rp = getServer().getPluginManager().getPlugin("Roleplay");
-    private static Roleplay instance;
-    ChatRoom room;
 
-    public ChatRoom getRoom() {
-        return room;
+    public static Permission getPerms() {
+        return perms;
     }
 
-    public void setRoom(ChatRoom room) {
-        this.room = room;
+    public static Chat getChat() {
+        return chat;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
     }
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         this.getConfig();
-        instance = this;
+        plugin = this;
+        chatRoom = new ChatRoom();
+        setupChat();
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
-        this.getCommand("rp").setExecutor(new org.roguemc.roleplay.commands.Roleplay());
-        this.getCommand("rpinvite").setExecutor(new org.roguemc.roleplay.commands.Invite());
-        getServer().getPluginManager().registerEvents(new EventsClass(), this);
+        this.getCommand("roleplay").setExecutor(new Invite(this));
+        this.getCommand("rp").setExecutor(new Invite(this));
+        this.getCommand("noemotes").setExecutor(new Ignore(this));
+        this.getCommand("emotes").setExecutor(new Help(this));
+        this.getCommand("emotesreload").setExecutor(new Reload(this));
+        getServer().getPluginManager().registerEvents(new EventsClass(this), this);
+        this.start();
+        this.setupPermissions();
 
     }
 
@@ -40,5 +59,36 @@ public final class Roleplay extends JavaPlugin implements Listener {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
+
+    public void start() {
+        Field bukkitCommandMap = null;
+        try {
+            bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        bukkitCommandMap.setAccessible(true);
+        CommandMap commandMap = null;
+        try {
+            commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+        } catch (IllegalArgumentException e3) {
+            e3.printStackTrace();
+        } catch (IllegalAccessException e4) {
+            e4.printStackTrace();
+        }
+        for (final String key : this.getConfig().getConfigurationSection("Emotes").getKeys(false)) {
+            commandMap.register(key, new CommandHandler(key));
+        }
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+}
 

@@ -66,4 +66,5 @@ public class ChatRoom {
         } else {
             playerRooms.put(player, roomName);
         }
-    }}
+    }
+}

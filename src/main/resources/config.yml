@@ -1,7 +1,9 @@
 no-permission: "&cYou don't have permission for this command!"
 invited-to-rp: "&cYou have been invited to a roleplay!"
 success-invited: "&cSuccessfully invited"
+leave-rp-msg: "&cDonezo"
 gui-name: '&8&lRoleplay Menu'
+public-rp name: "&7Public Roleplays"
 browse-name: '&e&lBrowse Roleplays'
 browse-lore:
   - ''
@@ -21,3 +23,16 @@ create-lore:
   - '&7Creates a brand new Roleplay'
   - '&7that you can invite your'
   - '&7friends to!'
+Emotes:
+  hug:
+    tomessages:
+      - '&c&lYou hugged %player%'
+    frommessages:
+      - '&c%player% has hugged you!'
+    broadcastmsgs:
+      - '&c%player% hugged %target%' ## perms of emotes will be emotes.(emote).
+    particle: VILLAGER_ANGRY
+    sound: ITEM_TRIDENT_RIPTIDE_3
+help-menu:
+  - '&cList your emotes here!'
+  - 'multi-line support'

@@ -3,28 +3,22 @@ package org.roguemc.roleplay.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class Roleplay implements CommandExecutor, Listener {
+public class Roleplay implements Listener {
     public Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("Roleplay");
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+    public void opener(Player sender) {
         if (sender instanceof Player) {
-            Player p = ((Player) sender).getPlayer();
+            Player p = sender.getPlayer();
             if (p.hasPermission("roleplay.rp")) {
                 String configgetter = this.plugin.getConfig().getString("gui-name");
                 Inventory inv = Bukkit.createInventory(p, 27, ChatColor.translateAlternateColorCodes('&', configgetter));
@@ -50,7 +44,7 @@ public class Roleplay implements CommandExecutor, Listener {
                 }
                 meta2.setLore(lore2);
                 explain.setItemMeta(meta2);
-                inv.setItem(13,explain);
+                inv.setItem(13, explain);
 
                 String createrp = ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("create-name"));
                 ItemStack create = new ItemStack(Material.ITEM_FRAME);
@@ -66,20 +60,15 @@ public class Roleplay implements CommandExecutor, Listener {
                 p.openInventory(inv);
 
 
-
-            }
-            else {
+            } else {
                 String s = this.plugin.getConfig().getString("no-permission");
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
             }
-        }
-        else {
+        } else {
             sender.sendMessage("You must be a player to execute this command.");
         }
 
 
-
-        return true;
     }
 
     public Plugin getPlugin() {
